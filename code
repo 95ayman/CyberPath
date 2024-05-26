@@ -6,8 +6,11 @@
 #define MAX_HAUTEUR 23
 #define MAX_LARGEUR 23
 
+// couleur
+#define RESET "\033[0m"
+#define ROUGE "\033[31m"
 
-// Vérifier si une position est valide pour placer des cibles
+// valider la position
 int positionValide(char grille[][MAX_LARGEUR], int hauteur, int largeur, int x, int y) {
     if (x < 0 || x >= hauteur || y < 0 || y >= largeur) return 0;
     if (grille[x][y] != '-') return 0;
@@ -23,11 +26,10 @@ int positionValide(char grille[][MAX_LARGEUR], int hauteur, int largeur, int x, 
     }
     return 1;
 }
-
 // Créer la grille de jeu
 void creationGrille(char grille[][MAX_LARGEUR], int *hauteur, int *largeur) {
-    *largeur = rand() % 6 + 17; 
-    *hauteur = rand() % 6 + 17 ; 
+    *largeur = rand() % 6 + 17;
+    *hauteur = rand() % 6 + 17;
 
     for (int i = 0; i < *hauteur; i++) {
         for (int j = 0; j < *largeur; j++) {
@@ -37,30 +39,30 @@ void creationGrille(char grille[][MAX_LARGEUR], int *hauteur, int *largeur) {
 
     // Définir les limites de la grille
     for (int i = 0; i < *largeur; i++) {
-        grille[0][i] = '0';          
-        grille[*hauteur - 1][i] = '0'; 
+        grille[0][i] = '0';
+        grille[*hauteur - 1][i] = '0';
     }
 
     for (int i = 0; i < *hauteur; i++) {
-        grille[i][0] = '0';               
-        grille[i][*largeur - 1] = '0';     
+        grille[i][0] = '0';
+        grille[i][*largeur - 1] = '0';
     }
 
-    // Ajouter des obstacles internes
+    // Ajouter des murs internes
     for (int i = 0; i < 2; i++) {
         int random1;
 
         random1 = rand() % (*hauteur - 2) + 1;
-        grille[random1][1] = '0';           
+        grille[random1][1] = '0';
 
         random1 = rand() % (*hauteur - 2) + 1;
-        grille[random1][*largeur - 2] = '0';    
+        grille[random1][*largeur - 2] = '0';
 
         random1 = rand() % (*largeur - 2) + 1;
-        grille[1][random1] = '0';             
+        grille[1][random1] = '0';
 
         random1 = rand() % (*largeur - 2) + 1;
-        grille[*hauteur - 2][random1] = '0';        
+        grille[*hauteur - 2][random1] = '0';
     }
 
     // Placer les cibles
@@ -69,7 +71,7 @@ void creationGrille(char grille[][MAX_LARGEUR], int *hauteur, int *largeur) {
         int random1 = rand() % (*hauteur - 2) + 1;
         int random2 = rand() % (*largeur - 2) + 1;
         if (positionValide(grille, *hauteur, *largeur, random1, random2)) {
-            grille[random1][random2] = '1'; 
+            grille[random1][random2] = '1';
             ciblesPlacees++;
 
             int random3 = rand() % 4 + 1;
@@ -111,6 +113,20 @@ void effacerEcran() {
     printf("\033[H\033[J");
 }
 
+// Afficher la grille avec des couleurs
+void afficherGrille(char grille[][MAX_LARGEUR], int hauteur, int largeur) {
+    for (int i = 0; i < hauteur; i++) {
+        for (int j = 0; j < largeur; j++) {
+            if (grille[i][j] == '0') {
+                printf(ROUGE "0 " RESET); // murs rouge
+            } else {
+                printf("%c ", grille[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
 // Déplacer le robot selon l'entrée de l'utilisateur
 int deplacerRobot(char grille[][MAX_LARGEUR], int hauteur, int largeur, int startX, int startY, int maxDeplacements) {
     int deplacements = 0;
@@ -140,13 +156,7 @@ int deplacerRobot(char grille[][MAX_LARGEUR], int hauteur, int largeur, int star
                     x--;
                     if (grille[x][y] == '1') {
                         grille[x][y] = robot;
-                        // Afficher la grille après chaque déplacement
-                        for (int i = 0; i < hauteur; i++) {
-                            for (int j = 0; j < largeur; j++) {
-                                printf("%c ", grille[i][j]);
-                            }
-                            printf("\n");
-                        }
+                        afficherGrille(grille, hauteur, largeur);
                         return deplacements;
                     }
                     grille[x][y] = robot;
@@ -158,13 +168,7 @@ int deplacerRobot(char grille[][MAX_LARGEUR], int hauteur, int largeur, int star
                     x++;
                     if (grille[x][y] == '1') {
                         grille[x][y] = robot;
-                        // Afficher la grille après chaque déplacement
-                        for (int i = 0; i < hauteur; i++) {
-                            for (int j = 0; j < largeur; j++) {
-                                printf("%c ", grille[i][j]);
-                            }
-                            printf("\n");
-                        }
+                        afficherGrille(grille, hauteur, largeur);
                         return deplacements;
                     }
                     grille[x][y] = robot;
@@ -176,13 +180,7 @@ int deplacerRobot(char grille[][MAX_LARGEUR], int hauteur, int largeur, int star
                     y--;
                     if (grille[x][y] == '1') {
                         grille[x][y] = robot;
-                        // Afficher la grille après chaque déplacement
-                        for (int i = 0; i < hauteur; i++) {
-                            for (int j = 0; j < largeur; j++) {
-                                printf("%c ", grille[i][j]);
-                            }
-                            printf("\n");
-                        }
+                        afficherGrille(grille, hauteur, largeur);
                         return deplacements;
                     }
                     grille[x][y] = robot;
@@ -194,13 +192,7 @@ int deplacerRobot(char grille[][MAX_LARGEUR], int hauteur, int largeur, int star
                     y++;
                     if (grille[x][y] == '1') {
                         grille[x][y] = robot;
-                        // Afficher la grille après chaque déplacement
-                        for (int i = 0; i < hauteur; i++) {
-                            for (int j = 0; j < largeur; j++) {
-                                printf("%c ", grille[i][j]);
-                            }
-                            printf("\n");
-                        }
+                        afficherGrille(grille, hauteur, largeur);
                         return deplacements;
                     }
                     grille[x][y] = robot;
@@ -208,20 +200,14 @@ int deplacerRobot(char grille[][MAX_LARGEUR], int hauteur, int largeur, int star
                 break;
         }
 
-        // Afficher la grille après chaque déplacement
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
-                printf("%c ", grille[i][j]);
-            }
-            printf("\n");
-        }
+        afficherGrille(grille, hauteur, largeur);
     }
 
     return deplacements;
 }
 
 int main() {
-    srand(time(NULL)); // Initialiser le générateur de nombres aléatoires
+    srand(time(NULL)); // nombres aléatoires
 
     int hauteur, largeur;
     char grille[MAX_HAUTEUR][MAX_LARGEUR];
@@ -229,36 +215,41 @@ int main() {
 
     // Choisir le niveau de difficulté
     int difficulte;
-    printf("Choisissez le niveau de difficulté (1 : Facile, 2 : Normal, 3 : Difficile) : ");
-    scanf("%d", &difficulte);
+    do {
+        printf("Choisissez le niveau de difficulté:\n");
+        printf("1: Facile (35 secondes)\n");
+        printf("2: Normal (25 secondes)\n");
+        printf("3: Difficile (15 secondes)\n");
+        printf("Entrez votre choix (1, 2, ou 3): ");
+        if (scanf("%d", &difficulte) != 1) {
+            while (getchar() != '\n');
+            difficulte = 0;
+        }
+    } while (difficulte < 1 || difficulte > 3);
 
     // Définir le temps d'affichage en fonction du niveau de difficulté
     int tempsAffichage;
     switch (difficulte) {
         case 1: // Facile
-            tempsAffichage = 35; // 35 secondes
+            tempsAffichage = 35; // 35 sec
             break;
         case 2: // Normal
-            tempsAffichage = 25; // 25 secondes
+            tempsAffichage = 25; // 25 sec
             break;
         case 3: // Difficile
-            tempsAffichage = 15; // 15 secondes
-            break;
-        default:
-            printf("Choix invalide ! Niveau de difficulté par défaut : Normal.\n");
-            tempsAffichage = 25; // Par défaut à 25 secondes
+            tempsAffichage = 15; // 15 sec
             break;
     }
 
     // Variables de jeu
     int nombreJoueurs;
-    printf("Entrez le nombre de joueurs : ");
-    scanf("%d", &nombreJoueurs);
-
-    if (nombreJoueurs <= 0) {
-        printf("Nombre de joueurs invalide.\n");
-        return 1;
-    }
+    do {
+        printf("Entrez le nombre de joueurs (nombre entier positif) : ");
+        if (scanf("%d", &nombreJoueurs) != 1 || nombreJoueurs <= 0) {
+            while (getchar() != '\n'); 
+            nombreJoueurs = 0;
+        }
+    } while (nombreJoueurs <= 0);
 
     int scoresJoueurs[nombreJoueurs];
     for (int i = 0; i < nombreJoueurs; i++) {
@@ -266,13 +257,13 @@ int main() {
     }
 
     int nombreRounds;
-    printf("Entrez le nombre de rounds : ");
-    scanf("%d", &nombreRounds);
-
-    if (nombreRounds <= 0) {
-        printf("Nombre de rounds invalide.\n");
-        return 1;
-    }
+    do {
+        printf("Entrez le nombre de rounds (nombre entier positif) : ");
+        if (scanf("%d", &nombreRounds) != 1 || nombreRounds <= 0) {
+            while (getchar() != '\n'); // Clear invalid input
+            nombreRounds = 0;
+        }
+    } while (nombreRounds <= 0);
 
     // Créer une grille unique pour tous les rounds
     creationGrille(grille, &hauteur, &largeur);
@@ -306,12 +297,8 @@ int main() {
         printf("Nous jouons avec le robot %c\n", robotChoisi);
 
         // Afficher la grille pendant le temps spécifié
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
-                printf("%c ", grille[i][j]);
-            }
-            printf("\n");
-        }
+        afficherGrille(grille, hauteur, largeur);
+        printf("Vous avez %d secondes pour mémoriser la grille...\n", tempsAffichage);
         sleep(tempsAffichage); // Pause pendant le temps spécifié
 
         // Effacer l'écran
@@ -320,12 +307,13 @@ int main() {
         // Chaque joueur estime le nombre de déplacements
         int estimationsJoueurs[nombreJoueurs];
         for (int i = 0; i < nombreJoueurs; i++) {
-            printf("Joueur %d, entrez le nombre de déplacements que vous pensez faire : ", i + 1);
-            scanf("%d", &estimationsJoueurs[i]);
-            if (estimationsJoueurs[i] <= 0) {
-                printf("Impossible, donnez un nombre positif.\n");
-                i--;
-            }
+            do {
+                printf("Joueur %d, entrez le nombre de déplacements que vous pensez faire (nombre entier positif) : ", i + 1);
+                if (scanf("%d", &estimationsJoueurs[i]) != 1 || estimationsJoueurs[i] <= 0) {
+                    while (getchar() != '\n'); // Clear invalid input
+                    estimationsJoueurs[i] = 0;
+                }
+            } while (estimationsJoueurs[i] <= 0);
         }
 
         // Déterminer le joueur avec l'estimation la plus basse
@@ -343,12 +331,7 @@ int main() {
         // Réafficher la grille pour le joueur qui fait les déplacements
         effacerEcran();
         printf("Nous jouons avec le robot %c\n", robotChoisi);
-        for (int i = 0; i < hauteur; i++) {
-            for (int j = 0; j < largeur; j++) {
-                printf("%c ", grille[i][j]);
-            }
-            printf("\n");
-        }
+        afficherGrille(grille, hauteur, largeur);
 
         // Déplacer le robot selon l'entrée du joueur et compter les déplacements
         int deplacementsReels = deplacerRobot(grille, hauteur, largeur, startX, startY, estimationMin);
@@ -365,9 +348,9 @@ int main() {
         // Mettre à jour les scores selon le nouveau système de points
         if (cibleAtteinte) {
             if (deplacementsReels == estimationMin) {
-                scoresJoueurs[joueurEstimationMin] += 2; // Atteindre la cible exactement dans les déplacements estimés
+                scoresJoueurs[joueurEstimationMin] += 2; // Atteindre une cible exactement dans les déplacements estimés
             } else if (deplacementsReels < estimationMin) {
-                scoresJoueurs[joueurEstimationMin] -= 1; // Atteindre la cible avec moins de déplacements que l'estimation
+                scoresJoueurs[joueurEstimationMin] -= 1; // Atteindre une cible avec moins de déplacements que l'estimation
                 if (scoresJoueurs[joueurEstimationMin] < 0) {
                     scoresJoueurs[joueurEstimationMin] = 0; // Le score ne peut pas être inférieur à 0
                 }

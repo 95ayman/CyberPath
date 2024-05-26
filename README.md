@@ -12,6 +12,6 @@ Ensuite, on a réfléchi à un moyen de déplacement des robots qui devait gliss
 Et c’est ici qu’on s’est rendu compte d’un problème dans le jeu, en effet certain robot ne pouvais jamais atteindre certaine cible. Ce qui nous a fait changer certaine regle du jeu.Maintenant le but du jeu était d’atteindre n’importe quelle cible que l'on à noté '1' (comme des piéces).
 Ensuite on a eu un problème que l’on n’a pas réussi régler dans les temps, en effet lorsque qu'on arrive à une cible, le joueur ne gagne pas de point.
 
-Pour la modulation du code, nous étions pas sûre donc on a mis le code entier dans "code" au cas où.
+Pour la modulation du code, nous étions pas sûre de comment faire dont on a tout mis dans un seul code.
 
                                

@@ -1,4 +1,6 @@
- 
+Ce jeu à été crée par GHOMARI ayman et SAPEY Yao en MI4.
+
+CYBER-PATH
 
 Nous étions deux pour faire ce projet de jeu en 2D. Pour ce jeu on a d'abord commencé par créer 
 le tableau 2D avec toutes les fonctionnalité (cibles, robot et les murs). Le premier problème que l’on a rencontré était que certain mur était collé (ceux autour des cibles) ce qui nous a fait réfléchir a une fonction qui espace toutes les cibles d’un rayon de 2 cases.
